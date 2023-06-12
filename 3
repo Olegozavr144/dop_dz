@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Student {
+    string surname;
+    string name;
+    int score1;
+    int score2;
+    int score3;
+    int passed;
+};
+
+bool compare(const Student& s1, const Student& s2) {
+    if (s1.passed != s2.passed) {
+        return s1.passed > s2.passed;
+    }
+    else {
+        if (s1.surname != s2.surname) {
+            return s1.surname < s2.surname;
+        }
+        else {
+            return false;
+        }
+    }
+}
+
+int main() {
+    ifstream in("input.txt");
+    ofstream out("output.txt");
+    int n;
+    in >> n;
+    vector<Student> students(n);
+    for (int i = 0; i < n; i++) {
+        in >> students[i].surname >> students[i].name >> students[i].score1 >> students[i].score2 >> students[i].score3;
+        students[i].passed = (students[i].score1 >= 65) + (students[i].score2 >= 65) + (students[i].score3 >= 65);
+    }
+    stable_sort(students.begin(), students.end(), compare);
+    for (const Student& student : students) {
+        out << student.surname << " " << student.name << " " << student.score1 << " " << student.score2 << " " << student.score3 << endl;
+    }
+    return 0;
+}
