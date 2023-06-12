@@ -1,0 +1,98 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <list>
+#include <algorithm>
+
+using namespace std;
+
+class Conference {
+private:
+    string name;
+    int year;
+    vector<string> topics;
+
+public:
+    Conference() {
+        name = "";
+        year = 0;
+        topics = {};
+    }
+
+    Conference(string n, int y, vector<string> t) {
+        name = n;
+        year = y;
+        topics = t;
+    }
+
+    string get_name() {
+        return name;
+    }
+
+    void set_name(string n) {
+        name = n;
+    }
+
+    int get_year() {
+        return year;
+    }
+
+    void set_year(int y) {
+        year = y;
+    }
+
+    vector<string> get_topics() {
+        return topics;
+    }
+
+    void set_topics(vector<string> t) {
+        topics = t;
+    }
+
+    void add_topic(string topic) {
+        topics.push_back(topic);
+    }
+
+    friend ostream& operator<<(ostream& os, const Conference& conf) {
+        os << "Conference name: " << conf.name << endl;
+        os << "Year: " << conf.year << endl;
+        os << "Topics: ";
+        for (string topic : conf.topics) {
+            os << topic << ", ";
+        }
+        os << endl;
+        return os;
+    }
+
+    bool operator==(const Conference& other) {
+        return year == other.year;
+    }
+};
+
+int main() {
+    Conference conf1("AI Conference", 2022, { "Machine Learning", "Natural Language Processing" });
+    Conference conf2("Data Science Conference", 2021, { "Data Analysis", "Data Visualization" });
+    Conference conf3("ML Conference", 2023, { "Deep Learning", "Computer Vision", "Reinforcement Learning" });
+    Conference conf4("NLP Conference", 2022, { "Text Classification", "Sentiment Analysis" });
+
+    list<Conference> conferences = { conf1, conf2, conf3, conf4 };
+
+    conferences.remove_if([](Conference& conf) {
+        return conf.get_year() == 2021;
+        });
+
+    for (Conference conf : conferences) {
+        cout << conf << endl;
+    }
+
+    vector<Conference> remaining_conferences(conferences.begin(), conferences.end());
+
+    int n = count_if(remaining_conferences.begin(), remaining_conferences.end(), [](Conference& conf) {
+        vector<string> topics = conf.get_topics();
+        return find(topics.begin(), topics.end(), "Machine Learning") != topics.end();
+        });
+
+    cout << n << endl;
+
+    return 0;
+}
