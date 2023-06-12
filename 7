@@ -1,0 +1,48 @@
+#include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+void split(const string& s, vector<string>& words) {
+    size_t pos = 0;
+    while (pos < s.size()) {
+        size_t end = s.find(' ', pos);
+        if (end == string::npos) {
+            end = s.size();
+        }
+        words.push_back(s.substr(pos, end - pos));
+        pos = end + 1;
+    }
+}
+
+int main() {
+    string s;
+    getline(cin, s);
+
+    vector<string> words;
+    split(s, words);
+
+    map<char, int> freq;
+    for (const string& word : words) {
+        if (!word.empty()) {
+            char first_char = tolower(word[0]);
+            freq[first_char]++;
+        }
+    }
+
+    char most_common_letter = '\0';
+    int max_freq = 0;
+    for (const auto& it : freq) {
+        if (it.second > max_freq) {
+            most_common_letter = it.first;
+            max_freq = it.second;
+        }
+    }
+
+    cout << most_common_letter << endl;
+
+    return 0;
+}
