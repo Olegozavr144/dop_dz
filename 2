@@ -1,0 +1,87 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Conference {
+private:
+    string name;
+    int year;
+    vector<string> topics;
+
+public:
+    Conference() {
+        name = "";
+        year = 0;
+        topics = {};
+    }
+
+    Conference(string n, int y, vector<string> t) {
+        name = n;
+        year = y;
+        topics = t;
+    }
+
+    string get_name() {
+        return name;
+    }
+
+    void set_name(string n) {
+        name = n;
+    }
+
+    int get_year() {
+        return year;
+    }
+
+    void set_year(int y) {
+        year = y;
+    }
+
+    vector<string> get_topics() {
+        return topics;
+    }
+
+    void set_topics(vector<string> t) {
+        topics = t;
+    }
+
+    void add_topic(string topic) {
+        topics.push_back(topic);
+    }
+
+    friend ostream& operator<<(ostream& os, const Conference& conf) {
+        os << "Conference name: " << conf.name << endl;
+        os << "Year: " << conf.year << endl;
+        os << "Topics: ";
+        for (string topic : conf.topics) {
+            os << topic << ", ";
+        }
+        os << endl;
+        return os;
+    }
+
+    bool operator==(const Conference& other) {
+        return year == other.year;
+    }
+};
+
+int main() {
+    Conference conf1("AI Conference", 2022, { "Machine Learning", "Natural Language Processing" });
+    Conference conf2("Data Science Conference", 2021, { "Data Analysis", "Data Visualization" });
+
+    conf1.add_topic("Computer Vision");
+
+    cout << conf1 << endl;
+    cout << conf2 << endl;
+
+    if (conf1 == conf2) {
+        cout << "The conferences have the same year." << endl;
+    }
+    else {
+        cout << "The conferences have different years." << endl;
+    }
+
+    return 0;
+}
